@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="js/vue-2.5.16.js"></script>
+    <script src="js/socket.io.js"></script>
+     <script src="js/axios.min.js"></script>
+    <link href="css/new.css" rel="stylesheet">
+
+    <!--prism高亮-->
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+    <link rel="stylesheet" href="js/code/prism.css">
+    <script src="js/code/prism.js"></script>
+    <style>
+        /*重写 number，bulma冲突*/
+       .token.number {
+           background-color: #f5f5f500;
+           display: inline;
+           font-size: 15px;
+           margin:0;
+           padding:0;
+           vertical-align: 0
+
+       }
+    </style>
+</head>
+
+
+<body>
+
+
+<div id="app">
+    <a class="button" @click="setToken">设置token</a>
+<!--笼罩-->
+<div class="longzhao" v-show="loginFlag||registerFlag"></div>
+<section class="hero is-info">
+
+<div class="hero-body">
+  <p class="title">
+    虚无的世界
+  </p>
+  <p class="subtitle" style="display: inline; font-size: 15px">
+    我认为这个世界是假的.
+  </p>
+
+    <div class="dropdown is-hoverable" style="background-color: #fff0; margin-left: 20px">
+        <div class="dropdown-trigger">
+        <a class="" aria-haspopup="true" aria-controls="dropdown-menu4" style="background-color: #fff0">
+          <span style="font-size: 12px">功能</span>
+          <span class="icon is-small">
+            <i class="fas fa-angle-down" aria-hidden="true" style="font-size: 12px"></i>
+          </span>
+        </a>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+        <div class="dropdown-content">
+          <div class="dropdown-item" v-show="is_account===false">
+            <button class=" tag navbar-end is-primary" @click="loginFlag=1" :disabled="registerFlag">登录</button> or
+            <button class="tag is-warning" @click="registerFlag=1" :disabled="loginFlag">注册</button>
+<!--              <button class="tag is-warning" @click="registerFlag=1" :disabled="loginFlag">获取令牌</button>-->
+<!--             <button class="tag is-warning" @click="registerFlag=1" :disabled="loginFlag">令牌登录</button>-->
+              <hr>
+            <a href="#" class="tag is-info">关于</a>
+          </div>
+            <div class="dropdown-item" v-show="is_account">
+            <a href="#" class="tag is-info">小生</a>
+            <p class="tag is-warning">余额: 1000000.00</p>
+                <hr>
+            <a class="tag is-danger">退出登录</a>
+
+          </div>
+    </div>
+</div>
+</div>
+
+</div>
+
+</section>
+
+<!--    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" style="height: 25px">-->
+<!--    <span aria-hidden="true"></span>-->
+<!--    <span aria-hidden="true"></span>-->
+<!--    <span aria-hidden="true"></span>-->
+<!--  </a>-->
+<!--<div class="navbar-menu container is-fluid" id="navMenu">-->
+<!--    &lt;!&ndash; navbar-start, navbar-end... &ndash;&gt;-->
+
+<!--    <a href="#" class="tag navbar-end is-primary">登录</a>-->
+<!--    <a href="#" class="tag is-warning">注册</a>-->
+<!--    <a href="#" class="tag is-info">关于</a>-->
+
+<!--  </div>-->
+
+<br>
+<!--vue的div-->
+
+<div class="container is-fluid">
+    <!--分类栏目-->
+    <div class="tabs is-centered is-boxed">
+    <ul>
+      <li :class="{'is-active': ClassFlag===1}" @click="ClassFlag=1">
+        <a>
+          <span class="icon is-small"><i class="fas fa-comment-dots" aria-hidden="true"></i></span>
+          <span>CHAT</span>
+        </a>
+      </li>
+      <li :class="{'is-active': ClassFlag===2}" @click="ClassFlag=2">
+        <a>
+          <span class="icon is-small"><i class="fas fa-pen-alt" aria-hidden="true"></i></span>
+
+          <span>记录</span>
+        </a>
+      </li>
+      <li :class="{'is-active': ClassFlag===3}" @click="ClassFlag=3">
+        <a>
+          <span class="icon is-small"><i class="fas fa-comments" aria-hidden="true"></i></span>
+          <span>社区</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+<div class="container is-fluid " v-show="loginFlag" >
+    <div class="container is-fluid fixed_div">
+    <!--登录-->
+    <article class="message is-success has-text-left-mobile">
+    <div class="message-body">
+         <button class="delete" style="float: right" @click="loginFlag=false"></button>
+        <h1 class="title is-3"> 虚无.世界</h1>
+        <h1 class="subtitle is-9"> Login null the World.</h1>
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="email" placeholder="Email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+        <a href="#" class="">忘记密码？</a> <br>
+        <a class="button is-primary">登  录</a>
+
+    </div>
+  </article>
+    </div>
+</div>
+
+<div class="container is-fluid" v-show="registerFlag">
+    <div class="container is-fluid fixed_div">
+    <!--注册-->
+    <article class="message is-warning has-text-left-mobile">
+    <div class="message-body">
+         <button class="delete" style="float: right" @click="registerFlag=false"></button>
+        <h1 class="title is-3"> 虚无.世界</h1>
+        <h1 class="subtitle is-9"> Add null the World.</h1>
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="email" placeholder="Email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="密码">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+               <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="再次输入密码">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+        <a href="#" class="">验证码</a> <br>
+        <a class="button is-warning">注  册</a>
+
+    </div>
+
+
+
+
+  </article>
+    </div>
+</div>
+
+    <!--聊天的-->
+    <div v-show="ClassFlag===1" id="msgDiv" v-html="">
+        <!--这里根据历史记录渲染-->
+        <div v-for="r in chatMessage">
+        <article class="media" style="padding: 20px 32px 10px 32px" >
+             <figure class="media-left">
+             <p class="image is-32x32">
+            <img src="https://bulma.io/images/placeholders/128x128.png">
+             </figure>
+             <div class="media-content">
+             <div class="content">
+            <strong>{{ r.name }}</strong> <small>@johnsmith</small> <small>31m</small>
+            <br>
+             <div> {{ r.tiwen }}</div>
+            </div>
+             </div>
+         </article>
+
+        <article class="media" style="padding: 20px 32px 10px 32px; background-color: rgba(238,238,238,0.27); " ><figure class="media-left"><p class="image is-32x32"> <img src="https://bulma.io/images/placeholders/128x128.png"> </figure> <div class="media-content"> <div class="content"> <strong>虚无</strong> <small>2023-01-01</small> <small>31m</small> <br> <div> {{ r.daan }}</div> </div> <nav class="level is-mobile"> <div class="level-left"> <a class="level-item"> <span class="icon is-small"><i class="fas fa-reply"></i></span> </a> <a class="level-item"> <span class="icon is-small"><i class="fas fa-heart"></i></span> </a> </div> </nav> </div> </article>
+
+    </div>
+
+
+    </div>
+
+    <!--对话记录的-->
+    <div class="container is-fluid" v-show="ClassFlag===2">
+        <button class="button is-small is-fullwidth" style="border: 1px green dashed; margin: 10px 0 10px 0">新的对话</button>
+        <div>
+            <div class="field is-grouped is-grouped-multiline">
+                <div class="control">
+                  <div class="tags has-addons">
+                    <a class="tag is-link" @click="get_message">python写一个for循环，要求...</a>
+                    <a class="tag is-delete"></a>
+                  </div>
+                </div>
+              <div class="control">
+                  <div class="tags has-addons">
+                    <a class="tag is-link" @click="get_message">询问五形八卦之中的, 兔子属于什么...</a>
+                    <a class="tag is-delete"></a>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--社区的-->
+    <div class="container is-fluid" v-show="ClassFlag===3">
+        <br> <h1>欢迎来到社区1区：</h1> <br>
+<!--        <article class="media" ><figure class="media-left" ><p class="image is-32x32 "><img src="https://bulma.io/images/placeholders/128x128.png" class="is-rounded"></p></figure><div class="media-content"><div class="content"><div><strong class="tag is-primary">你的名字</strong><br><div style="margin-top: 2px;background-color: #ebebeb;padding: 10px;border-radius: 5px;display: inline-block;">什么东西.</div></div></div></div></article>-->
+         <!--插入聊天消息-->
+        <div id="c_msg"></div>
+
+    <br>
+    <div class="field" style="text-align: center">
+
+          <textarea class="input is-info " type="text" placeholder="畅所欲言" style="width: 80%" v-model="community_input"></textarea>
+
+          <span class="icon is-small is-right">
+            <i class="fas fa-terminal" style="position: relative;margin-left: 12px;margin-top: 23px;" @click="sendMsgCommunity"></i>
+          </span>
+      </div>
+    </div>
+
+
+    <br>
+
+<!--输入框-->
+<div class="container is-fluid" ref="textarea" v-show="ClassFlag===1">
+    <textarea :disabled="area_status" v-model="text" class="textarea is-info has-fixed-size" placeholder="你想说些什么？" rows="2"></textarea>
+    <a @click="send_message" :class="{'button':1, 'is-loading':bt_status}" style="margin: 20px 0 20px 0">发送消息</a>
+</div>
+
+<!--版权消息-->
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p style="font-size: 12px">
+            <a href="#">“虚无”</a>使用openAI旗下的Chat人工智能对象实现，可用于多场景对话，科学，生物，数学，哲学等领域。
+        </p>
+      <p>
+        <strong>虚无的世界</strong><a href="#" style="font-size: 12px">XuWu.world</a>
+      </p>
+        <p style="font-size: 13px">©2023归墟版权所有</p>
+    </div>
+  </footer>
+
+<!--vue的结尾div-->
+</div>
+
+<script>
+    // 高亮
+    $(document).ready(function() {
+    // Check for click events on the navbar burger icon
+    $(".navbar-burger").click(function() {
+        $(".navbar-burger").toggleClass("is-active");
+        $(".navbar-menu").toggleClass("is-active");
+
+    });
+  });
+</script>
+<script src="js/c.js">
+    Prism.highlightAll();
+</script>
+<!--mark prism高亮-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>-->
+<!---->
+<!--<script src="code/prism-core.min.js"></script>-->
+<!--<script src="code/prism-autoloader.min.js"></script>-->
+
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+ "0":{
+  "name": "小明",
+  "tiwen": "问题1：请用python写一个for循环",
+  "daan": "1好的下面是..."
+},
+  "1":{
+  "name": "小明",
+  "tiwen": "问题2：请用python写一个for循环",
+  "daan": "2好的下面是..."
+},
+ "2":{
+  "name": "小明",
+  "tiwen": "问题32：请用python写一个for循环",
+  "daan": "3好的下面是..."
+},
+   "3":{
+  "name": "小明",
+  "tiwen": "问题4：请用python写一个for循环",
+  "daan": "4好的下面是...@socket.on('msg')\ndef msg(msg):\n    print(msg)\n    # 返回自己的消息\n    socket.emit('me', msg)\n    # ai回复\n    time.sleep(3)\n    ai_msg = \"正在修复中...\"\n    socket.emit('ai', ai_msg)"
+},
+   "4":{
+  "name": "小明",
+  "tiwen": "问题5:请用python写一个for循环",
+  "daan": "5好的下面是Download the Vue Devtools extension for a better development experience:\nhttps://github.com/vuejs/vue-devtools\nvue-2.5.16.js:8557 You are running Vue in development mode.\nMake sure to turn on production mode when deploying for production.\nSee more tips at https://vuejs.org/guide/deployment.html\nc.js:24 连接成功\nJohn Smith @johnsmith 31m\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.\n\n"
+}
+
+}
